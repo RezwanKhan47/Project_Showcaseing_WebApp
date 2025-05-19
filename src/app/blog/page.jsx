@@ -2,59 +2,46 @@ import React from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import clientPromise from "@/lib/db";
 
+const getBlogs = async () => {
+  try {
+    const client = await clientPromise;
+    const db = client.db("yourDatabaseName"); // replace with your DB name
+    const blogs = await db.collection("posts").find().toArray(); // <-- changed to "posts"
+    return blogs;
+  } catch (error) {
+    console.error("Failed to fetch blogs:", error);
+    return [];
+  }
+};
 
+const Blog = async () => {
+  const blogs = await getBlogs();
 
-const Blog = () => {
   return (
     <div className={styles.mainContainer}>
-     
-        <Link href='/blog/testid' className={styles.container}>
+      {blogs.map((blog) => (
+        <Link
+          href={`/blog/${blog._id.toString()}`}
+          className={styles.container}
+          key={blog._id.toString()}
+        >
           <div className={styles.imageContainer}>
             <Image
-              src="/building.jpg"
-              alt=""
+              src={blog.img || "/building.jpg"}
+              alt={blog.title}
               width={400}
               height={250}
               className={styles.image}
             />
           </div>
           <div className={styles.content}>
-            <h1 className={styles.title}>test</h1>
-            <p className={styles.desc}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consequatur exercitationem pariatur fuga qui explicabo saepe doloribus iusto in doloremque. Excepturi vitae sit nobis maxime, asperiores reprehenderit placeat. Necessitatibus, molestias.</p>
+            <h1 className={styles.title}>{blog.title}</h1>
+            <p className={styles.desc}>{blog.desc}</p>
           </div>
         </Link>
-        <Link href='/blog/testid' className={styles.container}>
-          <div className={styles.imageContainer}>
-            <Image
-              src="/building.jpg"
-              alt=""
-              width={400}
-              height={250}
-              className={styles.image}
-            />
-          </div>
-          <div className={styles.content}>
-            <h1 className={styles.title}>test</h1>
-            <p className={styles.desc}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consequatur exercitationem pariatur fuga qui explicabo saepe doloribus iusto in doloremque. Excepturi vitae sit nobis maxime, asperiores reprehenderit placeat. Necessitatibus, molestias.</p>
-          </div>
-        </Link>
-        <Link href='/blog/testid' className={styles.container}>
-          <div className={styles.imageContainer}>
-            <Image
-              src="/building.jpg"
-              alt=""
-              width={400}
-              height={250}
-              className={styles.image}
-            />
-          </div>
-          <div className={styles.content}>
-            <h1 className={styles.title}>test</h1>
-            <p className={styles.desc}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consequatur exercitationem pariatur fuga qui explicabo saepe doloribus iusto in doloremque. Excepturi vitae sit nobis maxime, asperiores reprehenderit placeat. Necessitatibus, molestias.</p>
-          </div>
-        </Link>
-      
+      ))}
     </div>
   );
 };

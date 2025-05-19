@@ -17,8 +17,17 @@ align-items: center;
     gap: 20px;
 }
 
-.logout{
+.login{
     background-color: #53c28b;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout{
+    background-color: rgb(250, 33, 33);
     border: none;
     color: #fff;
     padding: 10px 20px;

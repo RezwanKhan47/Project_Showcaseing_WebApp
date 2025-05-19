@@ -23,6 +23,15 @@ a {
   text-decoration: none;
 }
 
+.theme{
+  transition: 1s all ease;
+}
+
+.light{
+  background-color: white;
+  color: #111;
+}
+
 .container {
   max-width: 1366px;
   min-height: 100vh;

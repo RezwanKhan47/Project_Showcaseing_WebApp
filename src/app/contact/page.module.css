@@ -1,6 +1,4 @@
-.container{
- 
-}
+
 
 .content{
   display: flex;
@@ -59,4 +57,23 @@
     100%{
         transform: translateY(-20px) rotate(10deg);
     }
+}
+
+/* Add to your CSS file, e.g., contact.module.css */
+.button {
+  background: linear-gradient(90deg, #53c28b 0%, #49b07d 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 32px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(83, 194, 139, 0.15);
+}
+
+.button:hover {
+  background: linear-gradient(90deg, #49b07d 0%, #53c28b 100%);
+  box-shadow: 0 4px 16px rgba(83, 194, 139, 0.25);
 }

@@ -1,0 +1,120 @@
+/* ===== GLOBAL STYLES ===== */
+.fullPage {
+  min-height: 100vh;
+  background-color: transparent; /* Dark background */
+  /* color: #e0e0e0; Light text */
+  padding: 2rem;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ===== HEADER ===== */
+.headerArea {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.heading {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #4CAF50; /* Green accent */
+  font-weight: 600;
+}
+
+.subheading {
+  font-size: 1rem;
+  /* color: #b0b0b0; */
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== LOADING STATE ===== */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #4CAF50;
+  margin-top: 3rem;
+}
+
+/* ===== MESSAGE GRID ===== */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.noMessages {
+  text-align: center;
+  grid-column: 1 / -1;
+  /* color: #777; */
+  font-style: italic;
+}
+
+/* ===== MESSAGE CARD ===== */
+.card {
+    background-color: transparent; /* Dark background */
+
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #4CAF50; /* Green accent border */
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.info p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.label {
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* ===== REPLY FORM ===== */
+.replyForm {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.input {
+  padding: 0.8rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: transparent;
+  /* color: #e0e0e0; */
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #4CAF50;
+}
+
+.greenButton {
+  padding: 0.8rem;
+  background: #4CAF50;
+  /* color: white; */
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.greenButton:hover {
+  background: #45a049; /* Darker green on hover */
+}
+
+.status {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #4CAF50;
+  height: 1.2rem;
+}
+

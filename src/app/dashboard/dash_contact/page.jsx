@@ -1,21 +1,44 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+const ADMIN_EMAIL = "admin@example.com"; // Set your admin email here
 
 const ContactDashboard = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Redirect non-admin users to login
   useEffect(() => {
-    fetch("/api/contact")
-      .then((res) => res.json())
-      .then((data) => {
-        setMessages(data);
-        setLoading(false);
-      });
-  }, []);
+    if (status === "authenticated") {
+      if (!session?.user || session.user.email !== ADMIN_EMAIL) {
+        router.replace("/login");
+      }
+    } else if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status, session, router]);
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.email === ADMIN_EMAIL) {
+      fetch("/api/contact")
+        .then((res) => res.json())
+        .then((data) => {
+          setMessages(data);
+          setLoading(false);
+        });
+    }
+  }, [status, session]);
+
+  if (status === "loading" || loading)
+    return <div className={styles.loading}>Loading...</div>;
+
+  // Only admin can see the dashboard
+  if (!session?.user || session.user.email !== ADMIN_EMAIL) return null;
 
   return (
     <div className={styles.fullPage}>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
@@ -13,6 +13,16 @@ const Login = () => {
   const [loginType, setLoginType] = useState(""); // "admin" or "user"
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  // Redirect non-admin users to home page after login
+  useEffect(() => {
+    if (status === "authenticated") {
+      const isAdmin = session.user.email === ADMIN_EMAIL;
+      if (!isAdmin) {
+        router.replace("/");
+      }
+    }
+  }, [status, session, router]);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -31,25 +41,22 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     setLoginType("user");
-    signIn("google", { callbackUrl: "/dashboard" });
+    signIn("google", { callbackUrl: "/" }); // Non-admins go to home
   };
 
   // If logged in, show logout (and dashboard for admin)
   if (status === "authenticated") {
     const isAdmin = session.user.email === ADMIN_EMAIL;
+    if (!isAdmin) return null; // Prevent flicker for non-admins
     return (
       <div className={styles.container}>
-        <h1 className={styles.title}>
-          {isAdmin ? "You are logged in as Admin." : "You are logged in."}
-        </h1>
-        {isAdmin && (
-          <button
-            className={styles.button}
-            onClick={() => router.push("/dashboard")}
-          >
-            Go to Dashboard
-          </button>
-        )}
+        <h1 className={styles.title}>You are logged in as Admin.</h1>
+        <button
+          className={styles.button}
+          onClick={() => router.push("/dashboard")}
+        >
+          Go to Dashboard
+        </button>
         <button
           className={styles.button}
           style={{ marginTop: "20px", background: "#e74c3c" }}

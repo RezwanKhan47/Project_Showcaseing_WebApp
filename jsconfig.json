@@ -5,7 +5,8 @@
     }
   },
   "exclude": [
-    "src/app/portfolio/page.jsx"
+    "src/app/portfolio/page.jsx",
+    "src/app/portfolio/layout.jsx"
   ],
   "include": [
     "src/**/*"

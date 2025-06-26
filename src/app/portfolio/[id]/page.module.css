@@ -1,39 +1,210 @@
-
-.catTitle{
-  color: #53c28b
+/* General Layout and Spacing */
+.projectDetail {
+  max-width: 1200px;
+  margin: 4rem auto; /* Increased margin for better spacing */
+  padding: 0 2rem;
+  font-family: Arial, sans-serif; /* A more common, readable font */
+  color: #333; /* Darker text for better contrast */
 }
 
-.item{
-    display: flex;
-    gap: 50px;
-    margin-top: 50px;
-    margin-bottom: 100px;
-}
-.item:nth-child(odd){
-    flex-direction: row-reverse;
+.error {
+  text-align: center;
+  color: #e74c3c; /* Red for error messages */
+  font-size: 1.5rem;
+  margin-top: 5rem;
 }
 
-.imgContainer{
-    flex: 1;
-    height: 500px;
-    position: relative;
+/* Header Section */
+.projectHeader {
+  text-align: center;
+  margin-bottom: 3rem; /* More space below header */
 }
 
-.img{
-    object-fit: cover;
+.detailTitle {
+  font-size: 3.5rem; /* Larger title */
+  font-weight: 700;
+  margin-bottom: 1rem;
+  /* Green gradient for title */
+  background: linear-gradient(to right, #53c28b, #3da077);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.contect{
-    flex: 1;
-    display: flex;
+
+.detailMeta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem; /* Space between location and date */
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.detailMeta span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detailMeta svg {
+  color: #53c28b; /* Icon color */
+  min-width: 16px; /* Ensure icons don't shrink */
+  min-height: 16px;
+}
+
+/* Carousel Section */
+.carouselWrapper {
+  margin-bottom: 4rem; /* Spacing below carousel */
+  border-radius: 10px; /* Slightly rounded corners for the carousel container */
+  overflow: hidden; /* Ensures image corners are rounded with the wrapper */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1; /* Maintain aspect ratio for the carousel */
+  background-color: #f0f0f0; /* Placeholder background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.carouselImgWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carouselImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the area, cropping if necessary */
+  border-radius: 10px; /* Rounded corners for the image itself */
+}
+
+.carouselControls {
+  position: absolute;
+  bottom: 1.5rem; /* Position controls at the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for controls */
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px; /* Pill-shaped controls */
+  color: white;
+  font-weight: bold;
+}
+
+.carouselControls button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.8rem; /* Larger arrows */
+  cursor: pointer;
+  padding: 0 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.carouselControls button:hover {
+  color: #53c28b; /* Highlight color on hover */
+}
+
+.carouselControls span {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+/* Project Description Section */
+.projectDescription {
+  background-color: #ffffff; /* White background for description */
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+  line-height: 1.8; /* Better readability */
+}
+
+.descriptionTitle {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  /* Green gradient for description title */
+  background: linear-gradient(to right, #53c28b, #3da077);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center; /* Center the description title */
+}
+
+.projectDescription p {
+  font-size: 1.1rem;
+  color: #444;
+  text-align: justify; /* Justify text for a cleaner look */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .projectDetail {
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .detailTitle {
+    font-size: 2.5rem;
+  }
+
+  .detailMeta {
     flex-direction: column;
-    gap: 20px;
-    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .carouselWrapper {
+    margin-bottom: 2rem;
+  }
+
+  .carouselControls {
+    bottom: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .carouselControls button {
+    font-size: 1.5rem;
+  }
+
+  .projectDescription {
+    padding: 1.5rem;
+  }
+
+  .descriptionTitle {
+    font-size: 1.8rem;
+  }
+
+  .projectDescription p {
+    font-size: 1rem;
+  }
 }
 
-.title{
-    font-size: 50px;
-}
+@media (max-width: 480px) {
+  .detailTitle {
+    font-size: 2rem;
+  }
 
-.desc{
-    font-size: 20px;
+  .carouselControls {
+    bottom: 0.5rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .carouselControls button {
+    font-size: 1.2rem;
+  }
+
+  .descriptionTitle {
+    font-size: 1.5rem;
+  }
 }

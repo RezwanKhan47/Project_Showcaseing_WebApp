@@ -4,7 +4,7 @@
   background-color: transparent; /* Dark background */
   /* color: #e0e0e0; Light text */
   padding: 2rem;
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-family: "Segoe UI", Roboto, sans-serif;
 }
 
 /* ===== HEADER ===== */
@@ -16,7 +16,7 @@
 .heading {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #4CAF50; /* Green accent */
+  color: #4caf50; /* Green accent */
   font-weight: 600;
 }
 
@@ -31,7 +31,7 @@
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: #4CAF50;
+  color: #4caf50;
   margin-top: 3rem;
 }
 
@@ -51,12 +51,12 @@
 
 /* ===== MESSAGE CARD ===== */
 .card {
-    background-color: transparent; /* Dark background */
-
+  background-color: transparent; /* Dark background */
+  position: relative;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  border-left: 4px solid #4CAF50; /* Green accent border */
+  border-left: 4px solid #4caf50; /* Green accent border */
   transition: transform 0.2s;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .label {
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: 500;
 }
 
@@ -93,12 +93,12 @@
 }
 
 .input:focus {
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 .greenButton {
   padding: 0.8rem;
-  background: #4CAF50;
+  background: #4caf50;
   /* color: white; */
   border: none;
   border-radius: 4px;
@@ -114,7 +114,25 @@
 .status {
   font-size: 0.9rem;
   text-align: center;
-  color: #4CAF50;
+  color: #4caf50;
   height: 1.2rem;
 }
 
+.deleteButtonX {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ff4444;
+  padding:0 8px;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.deleteButtonX:hover {
+  background: #ff4444;
+  color: white;
+}

@@ -9,7 +9,10 @@
     "src/app/portfolio/layout.jsx"
   ],
   "include": [
-    "src/**/*"
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ]
 
 }

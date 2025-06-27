@@ -34,6 +34,17 @@ const ContactDashboard = () => {
     }
   }, [status, session]);
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this message?"))
+      return;
+    const res = await fetch(`/api/contact/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setMessages((msgs) => msgs.filter((msg) => msg._id !== id));
+    } else {
+      alert("Failed to delete message.");
+    }
+  };
+
   if (status === "loading" || loading)
     return <div className={styles.loading}>Loading...</div>;
 
@@ -55,6 +66,14 @@ const ContactDashboard = () => {
         )}
         {messages.map((msg) => (
           <div key={msg._id} className={styles.card}>
+            <button
+              className={styles.deleteButtonX}
+              onClick={() => handleDelete(msg._id)}
+              type="button"
+              aria-label="Delete message"
+            >
+              ×
+            </button>
             <div className={styles.info}>
               <p>
                 <span className={styles.label}>Name:</span> {msg.name}

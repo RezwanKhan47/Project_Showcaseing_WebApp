@@ -3,6 +3,8 @@ import styles from "./page.module.css";
 import Button from "@/app/components/button/button";
 import Image from "next/image";
 import clientPromise from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 // Server Component: fetch data from MongoDB
 async function getProjects() {
@@ -24,17 +26,21 @@ async function getProjects() {
 }
 
 const Portfolio = async () => {
+  const session = await getServerSession(authOptions);
   const projects = await getProjects();
 
   return (
     <div className={styles.catagory}>
-      <h1 className={styles.catTitle}>Portfolio</h1>
+      <h1 className={styles.catTitle}>Our Works</h1>
       {projects.map((item) => (
         <div className={styles.item} key={item._id}>
           <div className={styles.contect}>
             <h1 className={styles.title}>{item.title}</h1>
             <p className={styles.location}>{item.location}</p>
-            <Button url={`/portfolio/${item._id}`} text="See More" />
+            <Button
+              url={session ? `/portfolio/${item._id}` : "/login"}
+              text="See More"
+            />
           </div>
           <div className={styles.imgContainer}>
             <Image

@@ -3,6 +3,9 @@ import styles from "./page.module.css";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 import Carousel from "./Carousel";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth"; // <-- Add this line
 
 async function getProjectDetails(id) {
   const client = await clientPromise;
@@ -24,6 +27,11 @@ async function getProjectDetails(id) {
 }
 
 const PortfolioDetail = async ({ params }) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
+
   const { id } = params;
   const project = await getProjectDetails(id);
 

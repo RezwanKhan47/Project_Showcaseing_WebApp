@@ -1,9 +1,21 @@
-.container{
-    background-color: #53c28b;
-    padding:20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    width: max-content;
-    color: white;
+.container {
+  background-color: #53c28b;
+  padding: 20px ;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: max-content;
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: 100%;  
+    /* padding: 15px; */
+    min-width: 0;
+    padding: 14px 0;
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 6px;
   }
+}

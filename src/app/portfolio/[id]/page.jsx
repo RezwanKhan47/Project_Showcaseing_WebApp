@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./page.module.css";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
-import Carousel from "./Carousel";
+import EmblaCarousel from "./EmblaCarousel";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth"; // <-- Add this line
+import { authOptions } from "@/lib/auth";
 
 async function getProjectDetails(id) {
   const client = await clientPromise;
@@ -49,8 +49,7 @@ const PortfolioDetail = async ({ params }) => {
         </div>
       </div>
 
-      {/* Use the client Carousel component */}
-      <Carousel images={project.images} title={project.title} />
+      <EmblaCarousel images={project.images} title={project.title} />
 
       <div className={styles.description}>
         <h2>Description</h2>

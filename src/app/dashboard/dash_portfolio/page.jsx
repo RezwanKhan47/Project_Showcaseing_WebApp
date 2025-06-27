@@ -4,14 +4,23 @@ import styles from "./page.module.css";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FiEdit, FiTrash2, FiPlus, FiX, FiUpload, FiCalendar, FiMapPin } from "react-icons/fi";
+import {
+  FiEdit,
+  FiTrash2,
+  FiPlus,
+  FiX,
+  FiUpload,
+  FiCalendar,
+  FiMapPin,
+} from "react-icons/fi";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export function ProjectList() {
   const { data, error, isLoading } = useSWR("/api/projects", fetcher);
 
-  if (isLoading) return <div className={styles.loading}>Loading projects...</div>;
+  if (isLoading)
+    return <div className={styles.loading}>Loading projects...</div>;
   if (error) return <div className={styles.error}>Error loading projects</div>;
 
   return (
@@ -33,7 +42,8 @@ export function ProjectList() {
                   <FiMapPin size={14} /> {project.location}
                 </span>
                 <span className={styles.metaItem}>
-                  <FiCalendar size={14} /> {new Date(project.date).toLocaleDateString()}
+                  <FiCalendar size={14} />{" "}
+                  {new Date(project.date).toLocaleDateString()}
                 </span>
               </div>
             </div>
@@ -63,7 +73,12 @@ const ProjectForm = () => {
   const [statusMessage, setStatusMessage] = useState("");
   const [editingId, setEditingId] = useState(null);
 
-  const { data: projects, mutate, error, isLoading } = useSWR("/api/projects", fetcher);
+  const {
+    data: projects,
+    mutate,
+    error,
+    isLoading,
+  } = useSWR("/api/projects", fetcher);
 
   const [form, setForm] = useState({
     title: "",
@@ -94,7 +109,7 @@ const ProjectForm = () => {
       title: project.title,
       description: project.description,
       location: project.location,
-      date: project.date.split('T')[0], // Format date for input[type="date"]
+      date: project.date.split("T")[0], // Format date for input[type="date"]
     });
     setEditingId(project._id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -154,47 +169,8 @@ const ProjectForm = () => {
 
   return (
     <div className={styles.dashboard}>
-      <div className={styles.sidebar}>
-        <h2 className={styles.sidebarTitle}>Project Dashboard</h2>
-        <div className={styles.projectList}>
-          <h3 className={styles.listTitle}>Existing Projects</h3>
-          {isLoading ? (
-            <div className={styles.loading}>Loading...</div>
-          ) : error ? (
-            <div className={styles.error}>Error loading projects</div>
-          ) : (
-            <div className={styles.scrollContainer}>
-              {projects?.map((project) => (
-                <div key={project._id} className={styles.listItem}>
-                  <div className={styles.itemContent}>
-                    <h4 className={styles.itemTitle}>{project.title}</h4>
-                    <p className={styles.itemDate}>
-                      {new Date(project.date).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div className={styles.itemActions}>
-                    <button
-                      onClick={() => handleEdit(project)}
-                      className={styles.actionButton}
-                      aria-label="Edit"
-                    >
-                      <FiEdit size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(project._id)}
-                      className={styles.actionButton}
-                      aria-label="Delete"
-                    >
-                      <FiTrash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
+      {/* Place the dashboard title at the very top left */}
+      <h2 className={styles.dashboardTitle}>Project Dashboard</h2>
       <div className={styles.mainContent}>
         <form className={styles.projectForm} onSubmit={handleSubmit}>
           <div className={styles.formHeader}>
@@ -204,7 +180,12 @@ const ProjectForm = () => {
                 type="button"
                 onClick={() => {
                   setEditingId(null);
-                  setForm({ title: "", description: "", location: "", date: "" });
+                  setForm({
+                    title: "",
+                    description: "",
+                    location: "",
+                    date: "",
+                  });
                   setImages([]);
                 }}
                 className={styles.cancelButton}
@@ -277,7 +258,11 @@ const ProjectForm = () => {
               <div className={styles.fileUpload}>
                 <label htmlFor="images" className={styles.uploadButton}>
                   <FiUpload size={18} />
-                  <span>{images.length > 0 ? `${images.length} selected` : "Choose files"}</span>
+                  <span>
+                    {images.length > 0
+                      ? `${images.length} selected`
+                      : "Choose files"}
+                  </span>
                 </label>
                 <input
                   id="images"
@@ -293,10 +278,15 @@ const ProjectForm = () => {
                 <div className={styles.imagePreviews}>
                   {images.map((img, idx) => (
                     <div key={idx} className={styles.imagePreview}>
-                      <img src={URL.createObjectURL(img)} alt={`Preview ${idx}`} />
+                      <img
+                        src={URL.createObjectURL(img)}
+                        alt={`Preview ${idx}`}
+                      />
                       <button
                         type="button"
-                        onClick={() => setImages(images.filter((_, i) => i !== idx))}
+                        onClick={() =>
+                          setImages(images.filter((_, i) => i !== idx))
+                        }
                         className={styles.removeImage}
                       >
                         <FiX size={14} />
@@ -323,12 +313,57 @@ const ProjectForm = () => {
                 : "Create Project"}
             </button>
             {statusMessage && (
-              <div className={`${styles.statusMessage} ${statusMessage.includes("success") ? styles.success : styles.error}`}>
+              <div
+                className={`${styles.statusMessage} ${
+                  statusMessage.includes("success")
+                    ? styles.success
+                    : styles.error
+                }`}
+              >
                 {statusMessage}
               </div>
             )}
           </div>
         </form>
+      </div>
+      <div className={styles.sidebar}>
+        <div className={styles.projectList}>
+          <h3 className={styles.listTitle}>Existing Projects</h3>
+          {isLoading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : error ? (
+            <div className={styles.error}>Error loading projects</div>
+          ) : (
+            <div className={styles.scrollContainer}>
+              {projects?.map((project) => (
+                <div key={project._id} className={styles.listItem}>
+                  <div className={styles.itemContent}>
+                    <h4 className={styles.itemTitle}>{project.title}</h4>
+                    <p className={styles.itemDate}>
+                      {new Date(project.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className={styles.itemActions}>
+                    <button
+                      onClick={() => handleEdit(project)}
+                      className={styles.actionButton}
+                      aria-label="Edit"
+                    >
+                      <FiEdit size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(project._id)}
+                      className={styles.actionButton}
+                      aria-label="Delete"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

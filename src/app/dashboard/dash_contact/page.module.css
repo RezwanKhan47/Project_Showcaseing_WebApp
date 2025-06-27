@@ -127,7 +127,7 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: #ff4444;
-  padding:0 8px;
+  padding: 0 8px;
   border-radius: 3px;
   transition: all 0.2s;
 }
@@ -135,4 +135,67 @@
 .deleteButtonX:hover {
   background: #ff4444;
   color: white;
+}
+
+@media (max-width: 900px) {
+  .fullPage {
+    padding: 1rem;
+  }
+  .headerArea {
+    margin-bottom: 1.5rem;
+  }
+  .heading {
+    font-size: 2rem;
+  }
+  .subheading {
+    font-size: 0.95rem;
+  }
+  .grid {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 1rem;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .fullPage {
+    padding: 0.5rem;
+  }
+  .heading {
+    font-size: 1.4rem;
+  }
+  .subheading {
+    font-size: 0.85rem;
+  }
+  .card {
+    padding: 0.7rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  .deleteButtonX {
+    top: 4px;
+    right: 4px;
+    font-size: 1.2rem;
+    padding: 0 4px;
+  }
+  .replyForm {
+    gap: 0.5rem;
+  }
+  .input,
+  .greenButton {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+}
+
+.card {
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.08), 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+.card:hover {
+  box-shadow: 0 6px 24px rgba(76, 175, 80, 0.13), 0 8px 32px rgba(0, 0, 0, 0.13);
+  transform: translateY(-4px) scale(1.01);
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ const ADMIN_EMAIL = "admin@example.com"; // <-- set your admin email here
 const DashBlog = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -53,6 +54,13 @@ const DashBlog = () => {
       authorImage: post.authorImage,
     });
     setEditingId(post._id);
+
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+      // Optionally, focus the first input:
+      const firstInput = formRef.current.querySelector("input, textarea");
+      if (firstInput) firstInput.focus();
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -138,7 +146,7 @@ const DashBlog = () => {
             ))}
       </div>
 
-      <form className={styles.new} onSubmit={handleSubmit}>
+      <form ref={formRef} className={styles.new} onSubmit={handleSubmit}>
         <h1>Add New Post</h1>
         <input
           type="text"

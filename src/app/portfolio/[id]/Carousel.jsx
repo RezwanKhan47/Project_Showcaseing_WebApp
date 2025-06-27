@@ -1,61 +1,39 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import styles from "../page.module.css"
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import styles from "./page.module.css";
 
-export default function Carousel({ images }) {
-  const [idx, setIdx] = useState(0);
-
-  // Reset index if images change
-  useEffect(() => {
-    setIdx(0);
-  }, [images]);
-
-  useEffect(() => {
-    if (!images || images.length <= 1) return;
-    const interval = setInterval(() => {
-      setIdx((prevIdx) => (prevIdx + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [images]);
-
+export default function Carousel({ images, title }) {
   if (!images || images.length === 0) return null;
-
   return (
-    <div className={styles.carousel} tabIndex={0}>
-      <div className={styles.carouselImgWrapper}>
-        <Image
-          src={images[idx]}
-          alt={`Project image ${idx + 1}`}
-          width={1200}
-          height={600}
-          className={styles.carouselImg}
-          priority
-        />
-      </div>
-      {images.length > 1 && (
-        <div className={styles.carouselControls}>
-          <button
-            onClick={() => setIdx((idx - 1 + images.length) % images.length)}
-            aria-label="Previous image"
-            disabled={images.length <= 1}
-            type="button"
-          >
-            &lt;
-          </button>
-          <span>
-            {idx + 1} / {images.length}
-          </span>
-          <button
-            onClick={() => setIdx((idx + 1) % images.length)}
-            aria-label="Next image"
-            disabled={images.length <= 1}
-            type="button"
-          >
-            &gt;
-          </button>
-        </div>
-      )}
+    <div className={styles.carousel}>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={20}
+        slidesPerView={1}
+        className={styles.swiper}
+      >
+        {images.map((img, index) => (
+          <SwiperSlide key={index} className={styles.slide}>
+            <div className={styles.imageContainer}>
+              <Image
+                src={img}
+                alt={`${title} - Image ${index + 1}`}
+                fill
+                style={{ objectFit: "cover" }}
+                priority={index === 0}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }

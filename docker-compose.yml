@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo:7
@@ -15,8 +13,13 @@ services:
     container_name: my-webapp
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    environment:
+      - MONGODB_URI=mongodb+srv://Hitcon:hitcon.859477@hitcon.ixcbjrt.mongodb.net/yourDatabaseName?retryWrites=true&w=majority&appName=Hitcon
+      - GOOGLE_CLIENT_ID=110723506551-qj7263vnrkiffl9v0npjhehs6q86596p.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
+      - NEXTAUTH_SECRET=hitcon.859477
+      - GMAIL_USER=rezwanwarrior@gmail.com
+      - GMAIL_PASS=ypsardborjyqrckr
     depends_on:
       - mongo
 

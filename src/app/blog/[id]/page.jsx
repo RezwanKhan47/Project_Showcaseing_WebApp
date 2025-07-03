@@ -1,4 +1,3 @@
-// "use client";
 import React from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
@@ -11,12 +10,14 @@ import { redirect } from "next/navigation";
 const getBlogPost = async (id) => {
   try {
     if (!ObjectId.isValid(id)) return null;
+    
     const client = await clientPromise;
-    const db = client.db("yourDatabaseName"); // <-- use your real DB name
+    const db = client.db(process.env.DB_NAME);
     const blog = await db
       .collection("posts")
       .findOne({ _id: new ObjectId(id) });
-    return blog;
+      
+    return blog ? JSON.parse(JSON.stringify(blog)) : null;
   } catch (error) {
     console.error("Failed to fetch blog post:", error);
     return null;
@@ -26,8 +27,6 @@ const getBlogPost = async (id) => {
 const BlogPost = async ({ params }) => {
   const { id } = params;
   const blog = await getBlogPost(id);
-
-  // Server-side session check
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -35,42 +34,47 @@ const BlogPost = async ({ params }) => {
   }
 
   if (!blog) {
-    return <div>Blog post not found</div>;
+    return (
+      <div className={styles.notFound}>
+        <h1>404 - Blog post not found</h1>
+        <Link href="/blog">Back to Blogs</Link>
+      </div>
+    );
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.info}>
-          <h1 className={styles.title}>{blog.title}</h1>
-          <p className={styles.desc}>{blog.desc}</p>
+          <h1 className={styles.title}>{blog.title || "Untitled Post"}</h1>
+          <p className={styles.desc}>{blog.desc || "No description"}</p>
           <div className={styles.author}>
             <Image
-              src={
-                blog.authorImage ||
-                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww.jpg"
-              }
-              alt={blog.author || "Author"}
+              src={blog.authorImage || "/default-avatar.jpg"}
+              alt={blog.author || "Unknown author"}
               width={40}
               height={40}
               className={styles.avatar}
+              priority={false}
             />
             <span className={styles.username}>
-              {blog.author || "Rezwan Khan"}
+              {blog.author || "Anonymous"}
             </span>
           </div>
         </div>
         <div className={styles.imageContainer}>
           <Image
-            src={blog.img || "/building.jpg"}
-            alt={blog.title}
-            fill={true}
+            src={blog.img || "/fallback-image.jpg"}
+            alt={blog.title || "Blog image"}
+            fill
             className={styles.image}
+            priority={true} // Important for above-the-fold image
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
       <div className={styles.content}>
-        <p className={styles.text}>{blog.content}</p>
+        <p className={styles.text}>{blog.content || "No content available."}</p>
       </div>
     </div>
   );

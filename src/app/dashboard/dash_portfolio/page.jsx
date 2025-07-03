@@ -109,7 +109,7 @@ const ProjectForm = () => {
       title: project.title,
       description: project.description,
       location: project.location,
-      date: project.date.split("T")[0], // Format date for input[type="date"]
+      date: project.date ? project.date.split("T")[0] : "", // Safe check
     });
     setEditingId(project._id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -136,17 +136,26 @@ const ProjectForm = () => {
     setStatusMessage(editingId ? "Updating project..." : "Creating project...");
 
     try {
-      const formData = new FormData();
-      formData.append("title", form.title);
-      formData.append("description", form.description);
-      formData.append("location", form.location);
-      formData.append("date", form.date);
-      images.forEach((img) => formData.append("images", img));
+      let res;
+      if (editingId && images.length === 0) {
+        // Edit without new images
+        res = await fetch(`/api/projects?id=${editingId}`, {
+          method: "PUT",
+          body: formData,
+        });
+      } else {
+        // Create or edit with new images
+        const formData = new FormData();
+        formData.append("title", form.title);
+        formData.append("description", form.description);
+        formData.append("location", form.location);
+        formData.append("date", form.date);
+        images.forEach((img) => formData.append("images", img));
 
-      const url = editingId ? `/api/projects/${editingId}` : "/api/projects";
-      const method = editingId ? "PUT" : "POST";
-
-      const res = await fetch(url, { method, body: formData });
+        const url = editingId ? `/api/projects/${editingId}` : "/api/projects";
+        const method = editingId ? "PUT" : "POST";
+        res = await fetch(url, { method, body: formData });
+      }
 
       if (!res.ok) throw new Error(await res.text());
 

@@ -6,9 +6,9 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-
 RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# Fix: Remove brackets and use proper CMD syntax
+CMD ["npm", "run", "dev"]

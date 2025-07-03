@@ -14,7 +14,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb+srv://Hitcon:hitcon.859477@hitcon.ixcbjrt.mongodb.net/yourDatabaseName?retryWrites=true&w=majority&appName=Hitcon
+      - MONGODB_URI=mongodb://mongo:27017/yourDatabaseName  # Updated for local MongoDB
       - GOOGLE_CLIENT_ID=110723506551-qj7263vnrkiffl9v0npjhehs6q86596p.apps.googleusercontent.com
       - GOOGLE_CLIENT_SECRET=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
       - NEXTAUTH_SECRET=hitcon.859477
@@ -22,6 +22,8 @@ services:
       - GMAIL_PASS=ypsardborjyqrckr
     depends_on:
       - mongo
+    volumes:
+      - ./:/app  # Optional: For development (hot-reload)
 
 volumes:
   mongo-data:

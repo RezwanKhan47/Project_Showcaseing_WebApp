@@ -22,6 +22,37 @@
   color: #999;
 }
 
+.searchBar {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-radius: 30px;
+  border: 2px solid #53c28b;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 350px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #53c28b;
+  font-size: 1.1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.searchIcon {
+  color: #53c28b;
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
 @media (max-width: 1100px) {
   .container {
     gap: 24px;
@@ -47,6 +78,14 @@
     font-size: 1.2rem;
   }
   .desc {
+    font-size: 1rem;
+  }
+  .searchBar {
+    max-width: 100%;
+    padding: 0.4rem 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .searchInput {
     font-size: 1rem;
   }
 }

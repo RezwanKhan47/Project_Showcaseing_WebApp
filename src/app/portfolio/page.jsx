@@ -1,15 +1,14 @@
 import React from "react";
 import styles from "./page.module.css";
-import Button from "@/app/components/button/button";
-import Image from "next/image";
 import clientPromise from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import PortfolioClient from "./PortfolioClient";
 
 // Server Component: fetch data from MongoDB
 async function getProjects() {
   const client = await clientPromise;
-  const db = client.db("yourDatabaseName");
+  const db = client.db("yourDatabaseName"); // <-- replace with your DB name
   const projects = await db
     .collection("project")
     .find({}, { projection: { title: 1, images: 1, location: 1 } })
@@ -29,31 +28,8 @@ const Portfolio = async () => {
   const session = await getServerSession(authOptions);
   const projects = await getProjects();
 
-  return (
-    <div className={styles.catagory}>
-      <h1 className={styles.catTitle}>Our Works</h1>
-      {projects.map((item) => (
-        <div className={styles.item} key={item._id}>
-          <div className={styles.contect}>
-            <h1 className={styles.title}>{item.title}</h1>
-            <p className={styles.location}>{item.location}</p>
-            <Button
-              url={session ? `/portfolio/${item._id}` : "/login"}
-              text="See More"
-            />
-          </div>
-          <div className={styles.imgContainer}>
-            <Image
-              className={styles.img}
-              src={item.img}
-              fill={true}
-              alt={item.title}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  // Pass data to a client component for filtering/search
+  return <PortfolioClient projects={projects} session={session} />;
 };
 
 export default Portfolio;

@@ -56,6 +56,64 @@
   text-decoration: none;
 }
 
+/* Update or add these styles in your CSS file */
+
+.searchBar {
+  margin: 20px 0;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 45px 12px 20px; /* Space for icon on the right */
+  border: 2px solid #333; /* Dark border */
+  border-radius: 30px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: white; /* White text */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.searchInput:focus {
+  border-color: #53c28b; /* Teal-green accent on focus */
+  box-shadow: 0 0 0 3px rgba(83, 194, 139, 0.2); /* Glow effect */
+}
+
+.searchInput::placeholder {
+  color: #777; /* Gray placeholder */
+}
+
+/* Search icon (right side) */
+.searchBar::after {
+  content: "🔍";
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+/* Clear button (appears when typing) */
+.clearButton {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.clearButton:hover {
+  color: #53c28b;
+}
+
 @media (max-width: 1100px) {
   .item {
     gap: 24px;

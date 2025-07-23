@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import clientPromise from "@/lib/db"; // <-- Add this import
 
 export const authOptions = {
   providers: [
@@ -27,6 +28,23 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account.provider === "google") {
+        // Save the user's email to MongoDB
+        const client = await clientPromise;
+        const db = client.db("yourDatabaseName"); // replace with your DB name
+        await db
+          .collection("googleUsers")
+          .updateOne(
+            { email: user.email },
+            { $set: { email: user.email, name: user.name, image: user.image } },
+            { upsert: true }
+          );
+      }
+      return true;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

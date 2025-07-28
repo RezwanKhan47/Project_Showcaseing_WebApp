@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { FiEdit } from "react-icons/fi"; // Add this import at the top
+import { FiEdit } from "react-icons/fi";
 
 const ADMIN_EMAIL = "admin@example.com"; // <-- set your admin email here
 
@@ -16,7 +16,6 @@ const DashBlog = () => {
 
   useEffect(() => {
     if (status === "loading") return;
-    // If not logged in or not admin, redirect to login
     if (!session || session.user.email !== ADMIN_EMAIL) {
       router.push("/login");
     }
@@ -27,21 +26,37 @@ const DashBlog = () => {
     desc: "",
     content: "",
     img: "",
-    author: "",
-    authorImage: "",
   });
   const [editingId, setEditingId] = useState(null);
 
   // SWR Data Fetching
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, mutate, error, isLoading } = useSWR(
-    `/api/blogs`, // <-- changed from /api/posts to /api/blogs
-    fetcher
-  );
+  const { data, mutate, error, isLoading } = useSWR(`/api/blogs`, fetcher);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === "img" && files && files[0]) {
+      const formDataCloud = new FormData();
+      formDataCloud.append("file", files[0]);
+      formDataCloud.append(
+        "upload_preset",
+        process.env.CLOUDINARY_UPLOAD_PRESET
+      );
+
+      fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formDataCloud,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setFormData((prev) => ({ ...prev, img: data.secure_url }));
+        });
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEdit = (post) => {
@@ -50,14 +65,11 @@ const DashBlog = () => {
       desc: post.desc,
       content: post.content,
       img: post.img,
-      author: post.author,
-      authorImage: post.authorImage,
     });
     setEditingId(post._id);
 
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth" });
-      // Optionally, focus the first input:
       const firstInput = formRef.current.querySelector("input, textarea");
       if (firstInput) firstInput.focus();
     }
@@ -67,7 +79,6 @@ const DashBlog = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        // Edit mode: send PUT request
         await fetch(`/api/blogs/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -75,7 +86,6 @@ const DashBlog = () => {
         });
         setEditingId(null);
       } else {
-        // Create mode: send POST request
         await fetch("/api/blogs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,8 +97,6 @@ const DashBlog = () => {
         desc: "",
         content: "",
         img: "",
-        author: "",
-        authorImage: "",
       });
       mutate();
     } catch (error) {
@@ -99,7 +107,6 @@ const DashBlog = () => {
   const handleDelete = async (id) => {
     try {
       await fetch(`/api/blogs/${id}`, {
-        // <-- changed from /api/posts to /api/blogs
         method: "DELETE",
       });
       mutate();
@@ -167,27 +174,10 @@ const DashBlog = () => {
           required
         />
         <input
-          type="text"
+          type="file"
           name="img"
-          placeholder="Image URL"
+          accept="image/*"
           className={styles.input}
-          value={formData.img}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="author"
-          placeholder="Author"
-          className={styles.input}
-          value={formData.author}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="authorImage"
-          placeholder="Author Image URL"
-          className={styles.input}
-          value={formData.authorImage}
           onChange={handleChange}
         />
         <textarea

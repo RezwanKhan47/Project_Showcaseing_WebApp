@@ -6,6 +6,7 @@ import EmblaCarousel from "./EmblaCarousel";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import Feedback from "./Feedback"; // Import the Feedback component
 
 async function getProjectDetails(id) {
   const client = await clientPromise;
@@ -26,7 +27,8 @@ async function getProjectDetails(id) {
   };
 }
 
-const PortfolioDetail = async ({ params }) => {
+const PortfolioDetail = async (props) => {
+  const params = await props.params;
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/login");
@@ -48,13 +50,12 @@ const PortfolioDetail = async ({ params }) => {
           <span className={styles.date}>{project.date}</span>
         </div>
       </div>
-
       <EmblaCarousel images={project.images} title={project.title} />
-
       <div className={styles.description}>
         <h2>Description</h2>
         <p>{project.description}</p>
       </div>
+      <Feedback projectId={id} session={session} />
     </div>
   );
 };

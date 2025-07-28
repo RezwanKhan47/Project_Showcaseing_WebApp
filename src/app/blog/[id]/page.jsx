@@ -6,17 +6,18 @@ import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import Feedback from "./Feedback";
 
 const getBlogPost = async (id) => {
   try {
     if (!ObjectId.isValid(id)) return null;
-    
+
     const client = await clientPromise;
     const db = client.db(process.env.DB_NAME);
     const blog = await db
       .collection("posts")
       .findOne({ _id: new ObjectId(id) });
-      
+
     return blog ? JSON.parse(JSON.stringify(blog)) : null;
   } catch (error) {
     console.error("Failed to fetch blog post:", error);
@@ -24,7 +25,8 @@ const getBlogPost = async (id) => {
   }
 };
 
-const BlogPost = async ({ params }) => {
+const BlogPost = async (props) => {
+  const params = await props.params;
   const { id } = params;
   const blog = await getBlogPost(id);
   const session = await getServerSession(authOptions);
@@ -68,7 +70,7 @@ const BlogPost = async ({ params }) => {
             alt={blog.title || "Blog image"}
             fill
             className={styles.image}
-            priority={true} // Important for above-the-fold image
+            priority={true}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
@@ -76,6 +78,7 @@ const BlogPost = async ({ params }) => {
       <div className={styles.content}>
         <p className={styles.text}>{blog.content || "No content available."}</p>
       </div>
+      <Feedback blogId={id} session={session} />
     </div>
   );
 };

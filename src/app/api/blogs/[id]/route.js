@@ -1,49 +1,19 @@
+import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-export async function DELETE(request, { params }) {
-  try {
-    const client = await clientPromise;
-    const db = client.db("yourDatabaseName"); // Replace with your DB name
-    const { id } = params;
+export async function DELETE(request) {
+  const { params } = await request;
+  const { id } = params;
 
-    if (!ObjectId.isValid(id)) {
-      return new Response(JSON.stringify({ error: "Invalid ID" }), {
-        status: 400,
-      });
-    }
-
-    await db.collection("posts").deleteOne({ _id: new ObjectId(id) });
-
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: "Invalid blog ID" }, { status: 400 });
   }
-}
 
-export async function PUT(request, { params }) {
-  try {
-    const client = await clientPromise;
-    const db = client.db("yourDatabaseName"); // Use your DB name
-    const { id } = params;
-    const body = await request.json();
+  const client = await clientPromise;
+  const db = client.db(process.env.DB_NAME);
 
-    if (!ObjectId.isValid(id)) {
-      return new Response(JSON.stringify({ error: "Invalid ID" }), {
-        status: 400,
-      });
-    }
+  await db.collection("posts").deleteOne({ _id: new ObjectId(id) });
 
-    await db
-      .collection("posts")
-      .updateOne({ _id: new ObjectId(id) }, { $set: body });
-
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
-  }
+  return NextResponse.json({ success: true });
 }
